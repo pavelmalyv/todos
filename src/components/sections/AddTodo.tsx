@@ -1,9 +1,64 @@
+import type { SubmitHandler } from 'react-hook-form';
+import type { InferType } from 'yup';
+import type { Todo } from '@/types/todos';
+
+import { Controller, useForm } from 'react-hook-form';
+import { todoNameFieldSchema } from '@/schemas/fields';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { object } from 'yup';
+import { useAppDispatch } from '@/store/hooks';
+import { v4 as uuid } from 'uuid';
+import { addTodo as addTodoAction } from '@/store/todosSlice';
+import { FIELDS_MESSAGES } from '@/const/messages';
+
 import AppTextField from '../UI/AppTextField';
 
+const schemaForm = object({
+	name: todoNameFieldSchema.required(FIELDS_MESSAGES.todoRequired),
+});
+
+type FormData = InferType<typeof schemaForm>;
+
 const AddTodo = () => {
+	const dispatch = useAppDispatch();
+
+	const { control, handleSubmit, reset } = useForm<FormData>({
+		resolver: yupResolver(schemaForm),
+		defaultValues: {
+			name: '',
+		},
+	});
+
+	const onSubmit: SubmitHandler<FormData> = (data) => {
+		const newTodo: Todo = {
+			id: uuid(),
+			name: data.name,
+			completed: false,
+			createdAt: new Date().getTime(),
+		};
+
+		dispatch(addTodoAction(newTodo));
+		reset();
+	};
+
 	return (
-		<form aria-label="Добавление новой задачи">
-			<AppTextField label="Что нужно сделать?" />
+		<form onSubmit={handleSubmit(onSubmit)} aria-label="Добавление новой задачи">
+			<Controller
+				name="name"
+				control={control}
+				render={({ field: { ref, ...field }, fieldState }) => {
+					return (
+						<AppTextField
+							aria-required="true"
+							label="Что нужно сделать?"
+							inputRef={ref}
+							error={fieldState.invalid}
+							helperText={fieldState.error?.message}
+							{...field}
+						/>
+					);
+				}}
+			/>
 		</form>
 	);
 };
