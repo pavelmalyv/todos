@@ -1,4 +1,4 @@
-import type { Todo, TodoId } from '@/types/todos';
+import type { Todo, TodoCompleted, TodoId } from '@/types/todos';
 
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { editTodo, selectTodosFilter } from '@/store/todosSlice';
@@ -9,8 +9,12 @@ import TodosList from '../layout/TodosList';
 import DisplayMessage from '../UI/DisplayMessage';
 import useAppNotifications from '@/hooks/useAppNotifications';
 
-const TodosListContainer = () => {
-	const todosData = useAppSelector(selectTodosFilter);
+interface TodosListContainerProps {
+	completed?: TodoCompleted;
+}
+
+const TodosListContainer = ({ completed }: TodosListContainerProps) => {
+	const todosData = useAppSelector((state) => selectTodosFilter(state, completed));
 	const todos = getSortedArrayTodosByCreatedAt(todosData);
 
 	const dispatch = useAppDispatch();

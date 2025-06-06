@@ -1,3 +1,5 @@
+import type { TodoCompleted } from '@/types/todos';
+
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -9,14 +11,17 @@ import AddTodo from './AddTodo';
 import { useAppSelector } from '@/store/hooks';
 import { selectTodosFilter } from '@/store/todosSlice';
 import { getLengthTodos } from '@/utils/todos';
+import { useState } from 'react';
 
 const Todos = () => {
-	const notCompletedTodos = useAppSelector(selectTodosFilter);
+	const notCompletedTodos = useAppSelector((state) => selectTodosFilter(state, false));
+	const [toggleText, setToggleText] = useState<TodoCompleted | 'all'>('all');
 
 	return (
 		<Paper elevation={1} sx={{ maxWidth: 750, mx: 'auto' }} square>
 			<AddTodo />
-			<TodosListContainer />
+
+			<TodosListContainer completed={toggleText === 'all' ? undefined : toggleText} />
 
 			<Box
 				sx={{
@@ -35,10 +40,16 @@ const Todos = () => {
 					Осталось задач: {getLengthTodos(notCompletedTodos)}
 				</Typography>
 
-				<ToggleTextButton size="small" exclusive value="all" aria-label="Фильтр задач">
+				<ToggleTextButton
+					size="small"
+					exclusive
+					value={toggleText}
+					onChange={(_, value) => setToggleText(value)}
+					aria-label="Фильтр задач"
+				>
 					<ToggleTextButton.Item value="all">Все</ToggleTextButton.Item>
-					<ToggleTextButton.Item value="active">Активные</ToggleTextButton.Item>
-					<ToggleTextButton.Item value="completed">Выполненные</ToggleTextButton.Item>
+					<ToggleTextButton.Item value={true}>Завершенные</ToggleTextButton.Item>
+					<ToggleTextButton.Item value={false}>Активные</ToggleTextButton.Item>
 				</ToggleTextButton>
 
 				<RemoveTodo />
