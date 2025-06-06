@@ -7,11 +7,11 @@ import RemoveTodo from './RemoveTodo';
 import AddTodo from './AddTodo';
 
 import { useAppSelector } from '@/store/hooks';
-import { selectNotCompletedTodos } from '@/store/todosSlice';
+import { selectTodosFilter } from '@/store/todosSlice';
 import { getLengthTodos } from '@/utils/todos';
 
 const Todos = () => {
-	const notCompletedTodos = useAppSelector(selectNotCompletedTodos);
+	const notCompletedTodos = useAppSelector(selectTodosFilter);
 
 	return (
 		<Paper elevation={1} sx={{ maxWidth: 750, mx: 'auto' }} square>

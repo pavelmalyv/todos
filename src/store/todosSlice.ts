@@ -1,5 +1,5 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { TodosState, Todo } from '@/types/todos';
+import type { TodosState, Todo, TodoCompleted } from '@/types/todos';
 import type { RootState } from './store';
 import type { WritableDraft } from 'immer';
 
@@ -27,17 +27,19 @@ export const todosSlice = createSlice({
 
 export const { addTodo, editTodo } = todosSlice.actions;
 
-export const selectTodos = (state: RootState) => state.todos;
+export const selectTodosFilter = createSelector(
+	[(state: RootState) => state.todos, (_, completed?: TodoCompleted) => completed],
+	(todos, completed) => {
+		if (completed === undefined) {
+			return todos;
+		}
 
-export const selectNotCompletedTodos = createSelector(
-	(state: RootState) => state.todos,
-	(todos) => {
 		const result: TodosState = {};
 
 		for (const key in todos) {
 			const item = todos[key];
 
-			if (!item.completed) {
+			if (item.completed === completed) {
 				result[key] = item;
 			}
 		}
