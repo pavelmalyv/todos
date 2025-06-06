@@ -1,7 +1,23 @@
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { removeTodos, selectTodosFilter } from '@/store/todosSlice';
+import { getLengthTodos } from '@/utils/todos';
+
 import AppButton from '../UI/AppButton';
 
 const RemoveTodo = () => {
-	return <AppButton size="small">Удалить выполненные</AppButton>;
+	const completedTodos = useAppSelector((state) => selectTodosFilter(state, true));
+	const dispatch = useAppDispatch();
+
+	const handleClick = () => {
+		const completedTodosId = Object.keys(completedTodos);
+		dispatch(removeTodos(completedTodosId));
+	};
+
+	return (
+		<AppButton size="small" onClick={handleClick} disabled={getLengthTodos(completedTodos) === 0}>
+			Удалить выполненные
+		</AppButton>
+	);
 };
 
 export default RemoveTodo;

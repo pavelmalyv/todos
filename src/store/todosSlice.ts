@@ -1,5 +1,5 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { TodosState, Todo, TodoCompleted } from '@/types/todos';
+import type { TodosState, Todo, TodoCompleted, TodoId } from '@/types/todos';
 import type { RootState } from './store';
 import type { WritableDraft } from 'immer';
 
@@ -22,10 +22,19 @@ export const todosSlice = createSlice({
 
 			Object.assign(todo, action.payload);
 		},
+		removeTodos: (state, action: PayloadAction<TodoId[]>) => {
+			for (const key in state) {
+				const todo = state[key];
+
+				if (action.payload.includes(todo.id)) {
+					delete state[key];
+				}
+			}
+		},
 	},
 });
 
-export const { addTodo, editTodo } = todosSlice.actions;
+export const { addTodo, editTodo, removeTodos } = todosSlice.actions;
 
 export const selectTodosFilter = createSelector(
 	[(state: RootState) => state.todos, (_, completed?: TodoCompleted) => completed],
