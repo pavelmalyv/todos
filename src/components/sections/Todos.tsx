@@ -6,11 +6,16 @@ import TodosListContainer from './TodosListContainer';
 import RemoveTodo from './RemoveTodo';
 import AddTodo from './AddTodo';
 
+import { useAppSelector } from '@/store/hooks';
+import { selectNotCompletedTodos } from '@/store/todosSlice';
+import { getLengthTodos } from '@/utils/todos';
+
 const Todos = () => {
+	const notCompletedTodos = useAppSelector(selectNotCompletedTodos);
+
 	return (
 		<Paper elevation={1} sx={{ maxWidth: 750, mx: 'auto' }} square>
 			<AddTodo />
-
 			<TodosListContainer />
 
 			<Box
@@ -27,7 +32,7 @@ const Todos = () => {
 				}}
 			>
 				<Typography variant="body2" color="textSecondary">
-					2 пункта осталось
+					Осталось задач: {getLengthTodos(notCompletedTodos)}
 				</Typography>
 
 				<ToggleTextButton size="small" exclusive value="all" aria-label="Фильтр задач">

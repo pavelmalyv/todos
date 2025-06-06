@@ -6,3 +6,5 @@ export const getSortedArrayTodosByCreatedAt = (todos: TodosState, order: SortOrd
 		order === 'desc' ? b.createdAt - a.createdAt : a.createdAt - b.createdAt,
 	);
 };
+
+export const getLengthTodos = (todos: TodosState) => Object.keys(todos).length;

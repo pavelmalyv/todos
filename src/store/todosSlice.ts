@@ -3,7 +3,7 @@ import type { TodosState, Todo } from '@/types/todos';
 import type { RootState } from './store';
 import type { WritableDraft } from 'immer';
 
-import { createSlice } from '@reduxjs/toolkit';
+import { createSelector, createSlice } from '@reduxjs/toolkit';
 
 const initialState: TodosState = {};
 
@@ -26,6 +26,24 @@ export const todosSlice = createSlice({
 });
 
 export const { addTodo, editTodo } = todosSlice.actions;
+
 export const selectTodos = (state: RootState) => state.todos;
+
+export const selectNotCompletedTodos = createSelector(
+	(state: RootState) => state.todos,
+	(todos) => {
+		const result: TodosState = {};
+
+		for (const key in todos) {
+			const item = todos[key];
+
+			if (!item.completed) {
+				result[key] = item;
+			}
+		}
+
+		return result;
+	},
+);
 
 export default todosSlice.reducer;
