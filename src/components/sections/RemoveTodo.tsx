@@ -1,6 +1,7 @@
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { removeTodos, selectTodosFilter } from '@/store/todosSlice';
+import { removeTodos } from '@/store/todos/todosSlice';
 import { getLengthTodos } from '@/utils/todos';
+import { selectTodosFilter } from '@/store/todos/todosSelectors';
 
 import AppButton from '../UI/AppButton';
 

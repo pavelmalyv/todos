@@ -1,8 +1,9 @@
 import type { Todo, TodoCompleted, TodoId } from '@/types/todos';
 
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { editTodo, selectTodosFilter } from '@/store/todosSlice';
+import { editTodo } from '@/store/todos/todosSlice';
 import { getSortedArrayTodosByCreatedAt } from '@/utils/todos';
+import { selectTodosFilter } from '@/store/todos/todosSelectors';
 import { ERROR_MESSAGES } from '@/const/messages';
 
 import TodosList from '../layout/TodosList';

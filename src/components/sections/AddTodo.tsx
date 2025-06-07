@@ -9,7 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { object } from 'yup';
 import { useAppDispatch } from '@/store/hooks';
 import { v4 as uuid } from 'uuid';
-import { addTodo as addTodoAction } from '@/store/todosSlice';
+import { addTodo as addTodoAction } from '@/store/todos/todosSlice';
 import { useRef } from 'react';
 import { FIELDS_MESSAGES, SUCCESS_MESSAGES } from '@/const/messages';
 

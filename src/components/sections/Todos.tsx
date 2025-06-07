@@ -9,7 +9,7 @@ import RemoveTodo from './RemoveTodo';
 import AddTodo from './AddTodo';
 
 import { useAppSelector } from '@/store/hooks';
-import { selectTodosFilter } from '@/store/todosSlice';
+import { selectTodosFilter } from '@/store/todos/todosSelectors';
 import { getLengthTodos } from '@/utils/todos';
 import { useState } from 'react';
 

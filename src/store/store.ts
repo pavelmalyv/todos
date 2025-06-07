@@ -11,7 +11,7 @@ import {
 	REGISTER,
 } from 'redux-persist';
 
-import todosReducer from './todosSlice';
+import todosReducer from './todos/todosSlice';
 import storage from 'redux-persist/lib/storage';
 
 const rootReducer = combineReducers({
